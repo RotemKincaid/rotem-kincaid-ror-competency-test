@@ -7,9 +7,9 @@ class ArticlesAccessTest < ActionDispatch::IntegrationTest
     Article.delete_all
     User.delete_all
 
-    @editor = User.create!(email_address: "editor@test.com", password: "password", roles: [:editor, :user])
-    @editor2 = User.create!(email_address: "editor2@test.com", password: "password", roles: [:editor, :user])
-    @user = User.create!(email_address: "user@test.com", password: "password", roles: [:user])
+    @editor = User.create!(email_address: "editor@test.com", password: "password", roles: [ :editor, :user ])
+    @editor2 = User.create!(email_address: "editor2@test.com", password: "password", roles: [ :editor, :user ])
+    @user = User.create!(email_address: "user@test.com", password: "password", roles: [ :user ])
 
     @editors_article = Article.create!(title: "Mine", content: "abc", category: "Tech", user: @editor)
     @other_article = Article.create!(title: "Not mine", content: "xyz", category: "Tech", user: @editor2)
@@ -53,7 +53,7 @@ class ArticlesAccessTest < ActionDispatch::IntegrationTest
     get edit_article_path(@other_article)
 
     assert_response :redirect
-    assert_includes [root_path, articles_path], URI.parse(response.location).path
+    assert_includes [ root_path, articles_path ], URI.parse(response.location).path
   end
 
   test "editor can create an article" do
