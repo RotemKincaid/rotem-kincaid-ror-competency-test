@@ -22,4 +22,3 @@ Article.create!(title: "News 1", content: "Hello", category: "News", user: edito
 editor2 = User.create!(email_address: "editor2@test.com", password: "password", roles: "editor")
 
 Article.create!(title: "Other Editor Article", content: "Not yours", category: "Tech", user: editor2)
-

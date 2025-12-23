@@ -3,9 +3,9 @@ require "test_helper"
 
 class ArticlesAccessTest < ActionDispatch::IntegrationTest
   setup do
-    @editor = User.create!(email_address: "editor@test.com", password: "password", roles: [:editor, :user])
-    @editor2 = User.create!(email_address: "editor2@test.com", password: "password", roles: [:editor, :user])
-    @user = User.create!(email_address: "user@test.com", password: "password", roles: [:user])
+    @editor = User.create!(email_address: "editor@test.com", password: "password", roles: [ :editor, :user ])
+    @editor2 = User.create!(email_address: "editor2@test.com", password: "password", roles: [ :editor, :user ])
+    @user = User.create!(email_address: "user@test.com", password: "password", roles: [ :user ])
 
     @editors_article = Article.create!(title: "Mine", content: "abc", category: "Tech", user: @editor)
     @other_article = Article.create!(title: "Not mine", content: "xyz", category: "Tech", user: @editor2)
@@ -46,23 +46,23 @@ class ArticlesAccessTest < ActionDispatch::IntegrationTest
     get articles_path
     assert_response :success
   end
-  
+
   test "editor can create an article" do
     sign_in_as(@editor)
-  
+
     assert_difference("Article.count", 1) do
       post articles_path, params: { article: { title: "New", content: "Body", category: "News" } }
     end
-  
+
     assert_redirected_to article_path(Article.last)
   end
-  
+
   test "vanilla user cannot access new article page" do
     sign_in_as(@user)
-  
+
     get new_article_path
     assert_redirected_to root_path
-  end  
+  end
 
   private
 

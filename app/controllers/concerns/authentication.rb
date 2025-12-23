@@ -18,11 +18,11 @@ module Authentication
     def current_user
       Current.session&.user
     end
-    
+
     def authenticated?
       Current.session.present?
     end
-    
+
     def require_authentication
       authenticated? || request_authentication
     end
