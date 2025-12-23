@@ -1,0 +1,41 @@
+h1 class="text-3xl font-semibold tracking-tight mb-2"
+  | Welcome
+
+p class="text-slate-600 mb-8"
+  | Latest articles by category.
+
+- if @articles_by_category.blank?
+  div class="rounded-xl border bg-white p-6 shadow-sm"
+    p class="text-slate-700"
+      | No articles yet.
+    - if current_user&.editor_role?
+      = link_to "Create the first article",
+        new_article_path,
+        class: "mt-4 inline-flex items-center rounded-md bg-slate-900 px-5 py-2 text-white hover:bg-slate-800"
+- else
+  div class="grid gap-6"
+    - @articles_by_category.each do |category, articles|
+      div class="rounded-xl border bg-white p-6 shadow-sm"
+        div class="flex items-center justify-between gap-4 mb-4"
+          h2 class="text-lg font-semibold"
+            = category
+          = link_to "See all",
+            articles_path,
+            class: "text-sm font-medium text-slate-700 hover:text-slate-900"
+
+        - if articles.blank?
+          p class="text-slate-600"
+            | No articles in this category yet.
+        - else
+          div class="grid gap-3"
+            - articles.each do |a|
+              div class="rounded-lg border bg-slate-50 p-4 hover:bg-white transition"
+                div class="flex items-start justify-between gap-4"
+                  div
+                    h3 class="font-semibold text-slate-900"
+                      = a.title
+                    p class="text-sm text-slate-600 mt-1 line-clamp-2"
+                      = a.content
+                  = link_to "View",
+                    article_path(a),
+                    class: "text-sm font-medium text-slate-700 hover:text-slate-900 whitespace-nowrap"

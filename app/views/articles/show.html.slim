@@ -1,0 +1,10 @@
+div class="rounded-xl border bg-white p-6 shadow-sm"
+  div class="text-xs uppercase tracking-wide text-slate-500 mb-2"= @article.category
+  h1 class="text-2xl font-semibold tracking-tight mb-4"= @article.title
+  p class="text-slate-700 leading-relaxed whitespace-pre-wrap"= @article.content
+
+  - if current_user&.editor_role? && @article.user_id == current_user.id
+    div class="mt-6 flex gap-3"
+      = link_to "Edit", edit_article_path(@article), class: "inline-flex items-center rounded-md border px-4 py-2 hover:bg-slate-50"
+      = button_to "Delete", article_path(@article), method: :delete, data: { turbo_confirm: "Are you sure?" },
+          class: "inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"

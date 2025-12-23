@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Ro Kincaid Ror Competency Test" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+  <header class="border-b bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-4 flex items-center gap-3">
+      <div class="font-semibold text-lg">
+        <%= link_to "NewsRoom", root_path, class: "hover:text-slate-700" %>
+      </div>
+
+      <nav class="flex items-center gap-3 text-sm">
+        <%= link_to "Home", root_path, class: "px-3 py-2 rounded-md hover:bg-slate-100" %>
+        <%= link_to "Articles", articles_path, class: "px-3 py-2 rounded-md hover:bg-slate-100" %>
+
+        <% if current_user && Array(current_user.roles).map(&:to_s).include?("admin") %>
+          <%= link_to "Admin Users", admin_users_path, class: "px-3 py-2 rounded-md hover:bg-slate-100" %>
+        <% end %>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-3 text-sm">
+        <% if authenticated? %>
+          <span class="text-slate-600">
+            Logged in as <span class="font-medium text-slate-900"><%= current_user.email_address %></span>
+          </span>
+          <%= button_to "Logout", session_path, method: :delete,
+                class: "inline-flex items-center rounded-md bg-slate-900 px-3 py-2 text-white hover:bg-slate-800" %>
+        <% else %>
+          <%= link_to "Login", new_session_path,
+                class: "inline-flex items-center rounded-md bg-slate-900 px-3 py-2 text-white hover:bg-slate-800" %>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-4 py-8">
+    <% if notice.present? %>
+      <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-900">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900">
+        <%= alert %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </main>
+</body>
+</html>
