@@ -1,17 +1,17 @@
 class ArticlesController < ApplicationController
-  allow_unauthenticated_access only: [:index]
+  allow_unauthenticated_access only: [ :index ]
 
-  before_action :set_article, only: [:show, :edit, :update, :destroy]
+  before_action :set_article, only: [ :show, :edit, :update, :destroy ]
 
   # Guests:
   # - can see index
   # - must login to see show
-  before_action :require_login!, only: [:show]
+  before_action :require_login!, only: [ :show ]
 
   # Editors only:
-  before_action :require_login!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :require_editor!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :require_owner!, only: [:edit, :update, :destroy]
+  before_action :require_login!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :require_editor!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :require_owner!, only: [ :edit, :update, :destroy ]
 
   def index
     @articles = Article.order(created_at: :desc)
